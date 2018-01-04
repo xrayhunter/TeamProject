@@ -23,8 +23,7 @@ namespace GameProject
             this.GetRenderWindow().TouchMoved += Application_TouchMoved;
 #endif
             gsm = new GameStateManager();
-
-
+            
             Construct();
         }
 

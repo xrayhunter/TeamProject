@@ -1,4 +1,5 @@
 ﻿using GameProject.Core.AIBrains;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,22 @@ namespace GameProject.Core.Entities
 {
     public abstract class Entity
     {
-        public IAIBrain aiBrain;
+        private IAIBrain aiBrain;
 
+        private Vector2f position;
+        
         /// <summary>
-        /// Blank Overload constructor.
+        /// Creates a new Entity object.
         /// </summary>
-        public Entity() { }
-
+        /// <param name="position"></param>
+        public Entity(Vector2f position = new Vector2f()) { }
+        
         /// <summary>
-        /// Sets the AIBrain controller to this entity, and it takes over.
+        /// Sets the AIBrain to this entity to control it.
         /// </summary>
         /// <param name="aiBrain"></param>
-        public Entity(IAIBrain aiBrain)
+        /// <param name="position"></param>
+        public Entity(IAIBrain aiBrain, Vector2f position = new Vector2f())
         {
             this.aiBrain = aiBrain;
             this.aiBrain.SetEntityControlling(this);

@@ -42,7 +42,7 @@ namespace GameProject.Core
 
         public Engine()
         {
-            window = new RenderWindow(new SFML.Window.VideoMode(480, 560), "Game");
+            window = new RenderWindow(new SFML.Window.VideoMode(480, 560), "Game", SFML.Window.Styles.Close);
             window.Closed += Window_Closed;
             window.GainedFocus += Window_GainedFocus;
             window.LostFocus += Window_LostFocus;
