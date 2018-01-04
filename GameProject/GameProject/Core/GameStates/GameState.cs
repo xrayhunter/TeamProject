@@ -100,7 +100,7 @@ namespace GameProject.Core.GameStates
                 case GameStateManager.MobileInputTypes.TouchBegan:
                     touchBegan?.Invoke(e);
                     break;
-                case GameStateManager.MobileInputTypes.TouchEnd:
+                case GameStateManager.MobileInputTypes.TouchEnded:
                     touchEnd?.Invoke(e);
                     break;
                 case GameStateManager.MobileInputTypes.TouchMoved:

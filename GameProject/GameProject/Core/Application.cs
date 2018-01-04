@@ -23,20 +23,24 @@ namespace GameProject
             this.GetRenderWindow().TouchMoved += Application_TouchMoved;
 #endif
             gsm = new GameStateManager();
-            
+
+
             Construct();
         }
 
         private void Application_TouchMoved(object sender, SFML.Window.TouchEventArgs e)
         {
+            gsm.PassMobileInputs(GameStateManager.MobileInputTypes.TouchMoved, e);
         }
 
         private void Application_TouchEnded(object sender, SFML.Window.TouchEventArgs e)
         {
+            gsm.PassMobileInputs(GameStateManager.MobileInputTypes.TouchEnded, e);
         }
 
         private void Application_TouchBegan(object sender, SFML.Window.TouchEventArgs e)
         {
+            gsm.PassMobileInputs(GameStateManager.MobileInputTypes.TouchBegan, e);
         }
 
         private void Application_KeyReleased(object sender, SFML.Window.KeyEventArgs e)
@@ -51,7 +55,9 @@ namespace GameProject
 
         private void Application_Initialized()
         {
-            
+#if __MOBILE__ || __IOS__ || __ANDROID__
+            this.ShouldUpdateNotFocused = true;
+#endif
         }
 
         private void Application_Render()

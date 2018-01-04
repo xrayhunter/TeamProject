@@ -72,11 +72,18 @@ namespace GameProject.Core
                 // Receive the current events...
                 window.DispatchEvents();
 
-                // Update the engine...
-                Update?.Invoke(clock.Restart().AsMilliseconds());
+                if (!ShouldUpdateNotFocused && isFocused)
+                {
+                    // Update the engine...
+                    Update?.Invoke(clock.Restart().AsMilliseconds());
 
-                // Render the engine's screen.
-                Render?.Invoke();
+                    // Render the engine's screen.
+                    Render?.Invoke();
+                }
+                else
+                {
+                    clock.Restart().AsMilliseconds();
+                }
 
                 // Update our screen or in OpenGL Swap frame buffers...
                 window.Display();

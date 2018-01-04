@@ -194,7 +194,7 @@ namespace GameProject.Core.GameStates
         public enum MobileInputTypes
         {
             TouchBegan,
-            TouchEnd,
+            TouchEnded,
             TouchMoved
         }
 
