@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using System;
 
 namespace GameProject.Core
 {
@@ -11,33 +12,55 @@ namespace GameProject.Core
         /// <summary>
         /// Initialized is called when before the first update.
         /// </summary>
-        public event _Initialized_ Initialized = null;
+        protected event _Initialized_ Initialized = null;
 
         public delegate void _Update_(float deltaTime);
         /// <summary>
         /// Update is called every tick.
         /// </summary>
-        public event _Update_ Update = null;
+        protected event _Update_ Update = null;
 
         public delegate void _Render_();
         /// <summary>
         /// Render is called every frame.
         /// </summary>
-        public event _Render_ Render = null;
+        protected event _Render_ Render = null;
 
         public delegate void _Destroy_();
         /// <summary>
         /// Destroy is called when the engine is being destroyed...
         /// </summary>
-        public event _Destroy_ Destroy = null;
+        protected event _Destroy_ Destroy = null;
 
         #endregion
 
         private RenderWindow window;
 
+        public bool ShouldUpdateNotFocused { get; set; }
+
+        private bool isFocused = false;
+
         public Engine()
         {
             window = new RenderWindow(new SFML.Window.VideoMode(480, 560), "Game");
+            window.Closed += Window_Closed;
+            window.GainedFocus += Window_GainedFocus;
+            window.LostFocus += Window_LostFocus;
+        }
+
+        private void Window_LostFocus(object sender, EventArgs e)
+        {
+            isFocused = false;
+        }
+
+        private void Window_GainedFocus(object sender, EventArgs e)
+        {
+            isFocused = true;
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            Environment.Exit(0);
         }
 
         public void Construct()

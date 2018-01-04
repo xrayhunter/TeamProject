@@ -1,4 +1,5 @@
 ﻿using GameProject.Core.Entities;
+using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,11 @@ namespace GameProject.Core.GameStates
     public class GameStateManager
     {
         private Stack<GameState> states = new Stack<GameState>();
+
+        ~GameStateManager()
+        {
+            Destroy();
+        }
 
         /// <summary>
         /// Adds a state to the top of the list, which means this new state becomes the current one, and under ones will stay.
@@ -28,9 +34,10 @@ namespace GameProject.Core.GameStates
             if (removeWith)
                 RemoveState();
 
+            state.Initialize();
+
             // Add it to the top.
             states.Push(state);
-
         }
 
         /// <summary>
@@ -71,8 +78,12 @@ namespace GameProject.Core.GameStates
         /// </summary>
         /// <param name="stateID"></param>
         /// <returns></returns>
-        public GameState FindState(int stateID)
+        public GameState FindState(int stateID = -1)
         {
+            // Default to the current state...
+            if(stateID < 0)
+                return GetCurrentState();
+
             foreach (GameState state in states.ToArray())
             {
                 if(state.GetID() == stateID)
@@ -142,6 +153,88 @@ namespace GameProject.Core.GameStates
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the current state, and updates its entities.
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        public void Update(float deltaTime)
+        {
+            GameState state = FindState(-1);
+            if (state != null)
+            {
+                state.Update(deltaTime);
+
+                foreach (Entity ent in state.GetEntities().ToArray())
+                {
+                    ent.Update(deltaTime);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Renders the current state, and renders its entities.
+        /// </summary>
+        public void Render()
+        {
+            GameState state = FindState(-1);
+            if (state != null)
+            {
+                state.Render();
+
+                foreach (Entity ent in state.GetEntities().ToArray())
+                {
+                    ent.Render();
+                }
+            }
+        }
+
+        public enum MobileInputTypes
+        {
+            TouchBegan,
+            TouchEnd,
+            TouchMoved
+        }
+
+        /// <summary>
+        /// Passes Mobile data to the current state.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="e"></param>
+        public void PassMobileInputs(MobileInputTypes type, TouchEventArgs e)
+        {
+            GameState state = FindState(-1);
+
+            if (state != null)
+                state.PassMobileInputs(type, e);
+        }
+
+        /// <summary>
+        /// Passes Keyboard data to the current state.
+        /// </summary>
+        /// <param name="Pressed"></param>
+        /// <param name="e"></param>
+        public void PassKeyboardInput(bool Pressed, KeyEventArgs e)
+        {
+            GameState state = FindState(-1);
+
+            if (state != null)
+                state.PassKeyboardInputs(Pressed, e);
+        }
+
+        /// <summary>
+        /// Destroys everything inside GameStateManager.
+        /// </summary>
+        public void Destroy()
+        {
+            foreach(GameState state in states.ToArray())
+            {
+                state.Destroy();
+            }
+            states.Clear();
+            states = null;
         }
     }
 }
