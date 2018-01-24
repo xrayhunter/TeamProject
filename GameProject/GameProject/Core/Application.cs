@@ -1,7 +1,6 @@
 ﻿using GameProject.Core;
 using GameProject.Core.GameStates;
 
-
 namespace GameProject
 {
     public class Application : Engine
@@ -13,7 +12,7 @@ namespace GameProject
             this.Update += Application_Update;
             this.Render += Application_Render;
             this.Destroy += Application_Destroy;
-
+            
             this.GetRenderWindow().KeyPressed += Application_KeyPressed;
             this.GetRenderWindow().KeyReleased += Application_KeyReleased;
 
@@ -23,7 +22,7 @@ namespace GameProject
             this.GetRenderWindow().TouchMoved += Application_TouchMoved;
 #endif
             gsm = new GameStateManager();
-            
+
             Construct();
         }
 
